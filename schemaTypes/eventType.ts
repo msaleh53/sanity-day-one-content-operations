@@ -1,7 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import {CalendarIcon} from '@sanity/icons'
+
 
 export const eventType = defineType({
   name: 'event',
+  icon: CalendarIcon,
   title: 'Event',
   type: 'document',
   fields: [
@@ -49,4 +52,31 @@ export const eventType = defineType({
       type: 'url',
     }),
   ],
+  preview: {
+    select: {
+      name: 'name',
+      venue: 'venue.name',
+      artist: 'headline.name',
+      date: 'date',
+      image: 'image',
+    },
+    prepare({name, venue, artist, date, image}) {
+      const nameFormatted = name || 'Untitled event'
+      const dateFormatted = date
+        ? new Date(date).toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          })
+        : ''
+
+      return {
+        title: artist ? `${nameFormatted} (${artist})` : nameFormatted,
+        subtitle: venue ? `${dateFormatted} @ ${venue}` : dateFormatted,
+        media: image || CalendarIcon,
+      }
+    },
+  },
 })

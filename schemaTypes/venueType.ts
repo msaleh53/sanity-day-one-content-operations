@@ -1,7 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import {PinIcon} from '@sanity/icons'
+
 
 export const venueType = defineType({
   name: 'venue',
+  icon: PinIcon,
   title: 'Venue',
   type: 'document',
   fields: [
